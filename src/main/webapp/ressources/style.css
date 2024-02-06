@@ -1,0 +1,13 @@
+.site-footer {
+    background-color: #f4f4f4;
+    padding: 20px 0;
+    text-align: center;
+    margin-top: 40px;
+    font-size: 0.8em;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+}
