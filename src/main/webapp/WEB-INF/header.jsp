@@ -4,9 +4,10 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Votre Application</title>
-    <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
+    <title>Connexion</title>
+    <link href="resources/styles.css" rel="stylesheet">
 </head>
+<body>
 <body>
 <div class="header">
     <div class="container">
