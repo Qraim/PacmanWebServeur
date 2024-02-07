@@ -3,5 +3,6 @@
     <div class="container">
         <p>Projet Pacman 2024</p>
         <p>Quentin Raimbault</p>
+        <p>Alexandre Joly</p>
     </div>
 </footer>
