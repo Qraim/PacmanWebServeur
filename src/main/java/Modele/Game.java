@@ -10,6 +10,12 @@ public class Game implements Comparable<Game>{
     private String status;
     private ArrayList<User> joueurs;
 
+    public Game(String map, int score, String status) {
+        this.map = map;
+        this.score = score;
+        this.status = status;
+    }
+
     public Game() {
         super();
     }

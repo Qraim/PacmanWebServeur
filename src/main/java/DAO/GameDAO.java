@@ -71,9 +71,8 @@ public class GameDAO {
         return games;
     }
 
-
-
-
+    public void updateGame(int id, int score) {
+    }
 
 
     // Ajouter d'autres méthodes CRUD ici...

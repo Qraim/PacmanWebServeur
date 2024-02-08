@@ -19,11 +19,14 @@ public class LoginServlet extends HttpServlet {
 
     UserDao utilisateurDao;
 
+    public void init() throws ServletException {
+        this.utilisateurDao = ((DAOFactory) getServletContext().getAttribute(CONF_DAO_FACTORY)).getUtilisateurDao();
+    }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String requestBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
         JSONObject requestJson = new JSONObject(requestBody);
-        this.utilisateurDao = ((DAOFactory) getServletContext().getAttribute(CONF_DAO_FACTORY)).getUtilisateurDao();
 
         LoginForm form = new LoginForm(utilisateurDao);
         User utilisateur = form.connecterUtilisateur(requestJson);
