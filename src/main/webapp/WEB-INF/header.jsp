@@ -5,11 +5,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Votre Application</title>
-    <link href="resources/styles.css" rel="stylesheet">
+    <link href="resources/style/styles.css" rel="stylesheet">
 </head>
 <body>
 <div class="header">
+
     <div class="container">
+        <img src="resources/images/pacman.png" alt="logo" class="logo" height="30px">
         <div class="navbar">
             <a href="${pageContext.request.contextPath}/index.jsp">Accueil</a>
             <c:if test="${sessionScope.sessionUser == null}">
@@ -17,7 +19,7 @@
                 <a href="${pageContext.request.contextPath}/register">Inscription</a>
             </c:if>
             <c:if test="${sessionScope.sessionUser != null}">
-                Bonjour, ${sessionScope.sessionUser.getName()}
+                Welcome back, ${sessionScope.sessionUser.getName()}
                 <a href="${pageContext.request.contextPath}/games">Historique</a>
                 <a href="${pageContext.request.contextPath}/logout">Déconnexion</a>
             </c:if>

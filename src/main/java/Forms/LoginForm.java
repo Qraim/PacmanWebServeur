@@ -5,6 +5,7 @@ import DAO.UserDao;
 import Modele.ModelException;
 import Modele.User;
 import org.jasypt.util.password.ConfigurablePasswordEncryptor;
+import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -30,6 +31,45 @@ public final class LoginForm {
     public Map<String, String> getErreurs() {
         return erreurs;
     }
+
+    public User connecterUtilisateur(JSONObject json) {
+        String email = json.optString(CHAMP_EMAIL); // Utilise optString pour éviter les NullPointerException
+        String motDePasse = json.optString(CHAMP_PASS);
+
+        User utilisateur = new User();
+
+        try {
+            traiterEmail(email, utilisateur);
+            traiterMotDePasse(motDePasse, utilisateur);
+
+            if (erreurs.isEmpty()) {
+                utilisateur = utilisateurDao.trouver(email);
+                if (utilisateur == null) {
+                    setErreur(CHAMP_EMAIL, "Utilisateur inconnu, merci de vérifier votre email.");
+                    resultat = "Échec de la connexion.";
+                } else {
+                    ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
+                    passwordEncryptor.setAlgorithm("SHA-256");
+                    passwordEncryptor.setPlainDigest(false);
+
+                    if (!passwordEncryptor.checkPassword(motDePasse, utilisateur.getPassword())) {
+                        setErreur(CHAMP_PASS, "Mot de passe invalide.");
+                        resultat = "Échec de la connexion.";
+                    } else {
+                        resultat = "Succès de la connexion.";
+                    }
+                }
+            } else {
+                resultat = "Échec de la connexion.";
+            }
+        } catch (DAOException | ModelException e) {
+            resultat = "Échec de la connexion : une erreur imprévue est survenue, merci de réessayer dans quelques instants.";
+            e.printStackTrace();
+        }
+
+        return utilisateur;
+    }
+
 
     public User connecterUtilisateur(HttpServletRequest request) {
         String email = getValeurChamp(request, CHAMP_EMAIL);

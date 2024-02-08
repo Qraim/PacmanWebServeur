@@ -33,10 +33,8 @@ public class Connexion extends HttpServlet {
         /* Préparation de l'objet formulaire */
         LoginForm form = new LoginForm(utilisateurDao);
 
-        /* Traitement de la requête et récupération du bean en résultant */
         User utilisateur = form.connecterUtilisateur(request);
 
-        /* Stockage du formulaire dans l'objet request */
         request.setAttribute(ATT_FORM, form);
 
         if (form.getErreurs().isEmpty()) {

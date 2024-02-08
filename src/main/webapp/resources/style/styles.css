@@ -7,11 +7,15 @@ body {
 }
 
 .container {
-    width: 80%;
-    margin: auto;
-    overflow: hidden;
+    display: flex; /* Utilise flexbox pour aligner les éléments sur une ligne */
+    justify-content: center; /* Centre les éléments dans le conteneur */
+    align-items: center; /* Alignement vertical au centre */
+    flex-wrap: wrap; /* Permet aux éléments de passer à la ligne si nécessaire */
 }
 
+.container p {
+    margin: 0 10px; /* Ajoute un peu d'espace horizontal entre les éléments */
+}
 /* Header styles */
 .header {
     background-color: #333;
@@ -42,7 +46,9 @@ body {
     text-align: center;
     padding: 10px 0;
     bottom: 0;
-    position: relative;
+    position:absolute;
+    width:100%;
+    bottom:0px;
 }
 
 /* Form styles */
@@ -113,4 +119,12 @@ th {
 }
 tr:nth-child(even) {
     background-color: #f9f9f9;
+}
+
+#logo {
+    padding: 10px 0;
+    right: 0;
+    position:absolute;
+    width:100%;
+    bottom:0px;
 }
