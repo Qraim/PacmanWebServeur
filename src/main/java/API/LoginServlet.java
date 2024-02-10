@@ -35,6 +35,8 @@ public class LoginServlet extends HttpServlet {
         if (form.getErreurs().isEmpty()) {
             responseJson.put("status", "success");
             responseJson.put("message", "Connexion réussie");
+            responseJson.put("id", utilisateur.getId());
+
         } else {
             responseJson.put("status", "failure");
             responseJson.put("message", form.getErreurs().values().toString()); // Améliorer pour une meilleure représentation des erreurs

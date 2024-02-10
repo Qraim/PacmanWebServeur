@@ -14,10 +14,14 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.stream.Collectors;
 
-@WebServlet("/api/game")
-public class GameServlet extends HttpServlet {
+@WebServlet("/api/gameusers")
+public class GameUsersServlet extends HttpServlet {
 
     private DAOFactory daoFactory;
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    }
 
     @Override
     public void init() {
@@ -31,24 +35,27 @@ public class GameServlet extends HttpServlet {
         JSONObject responseJson = new JSONObject();
 
         try (Connection connection = daoFactory.getConnection()) {
-            GameDAO gameDAO = new GameDAO(connection);
-            UserGameDAO userGameDAO = new UserGameDAO(connection); // Utiliser UserGameDAO pour gérer les associations
+            UserGameDAO userGameDAO = new UserGameDAO(connection);
 
-            Game g = new Game();
-            g.setMap(requestJson.getString("map"));
-            g.setScore(requestJson.getInt("score"));
-            g.setStatus(requestJson.getString("status"));
-
-            int gameId = gameDAO.addGame(g);
+            int userId;
+            int gameId;
 
             if (requestJson.has("userId")) {
-                int userId = requestJson.getInt("userId");
-                userGameDAO.addUserGame(userId, gameId);
+                userId = requestJson.getInt("userId");
+            } else {
+                throw new IllegalArgumentException("userId is required.");
             }
+
+            if (requestJson.has("gameId")) {
+                gameId = requestJson.getInt("gameId");
+            } else {
+                throw new IllegalArgumentException("gameId is required.");
+            }
+
+            userGameDAO.addUserGame(userId, gameId);
 
             responseJson.put("success", true);
             responseJson.put("message", "Game added successfully.");
-            responseJson.put("gameId", gameId); // Retourne l'ID du jeu inséré
 
         } catch (SQLException e) {
             responseJson.put("success", false);

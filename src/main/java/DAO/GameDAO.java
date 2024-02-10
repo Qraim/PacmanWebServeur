@@ -14,14 +14,27 @@ public class GameDAO {
         this.connection = connection;
     }
 
-    public void addGame(Game game, int userId) throws SQLException {
-        String query = "INSERT INTO Games (map, score, status, joueur_id) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
+    // Modifiée pour ne plus inclure le userId, car cette information est désormais gérée séparément
+    public int addGame(Game game) throws SQLException {
+        String query = "INSERT INTO Games (map, score, status) VALUES (?, ?, ?)";
+        // Utilisation de Statement.RETURN_GENERATED_KEYS pour récupérer l'ID du jeu inséré
+        try (PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, game.getMap());
             statement.setInt(2, game.getScore());
             statement.setString(3, game.getStatus());
-            statement.setInt(4, userId);
-            statement.executeUpdate();
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Creating game failed, no rows affected.");
+            }
+
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1); // Retourne l'ID du jeu inséré
+                } else {
+                    throw new SQLException("Creating game failed, no ID obtained.");
+                }
+            }
         }
     }
 
@@ -34,9 +47,9 @@ public class GameDAO {
         return game;
     }
 
-
+    // Cette méthode pourrait ne plus être pertinente selon votre nouvelle conception
     public Game getGame(int gameId) throws SQLException, ModelException {
-        String query = "SELECT id, map, score, status, joueur_id FROM Games WHERE id = ?";
+        String query = "SELECT id, map, score, status FROM Games WHERE id = ?";
         Game game = null;
 
         try (PreparedStatement statement = this.connection.prepareStatement(query)) {
@@ -52,28 +65,16 @@ public class GameDAO {
         return game;
     }
 
-    public List<Game> getGamesByUserId(int userId) throws SQLException {
-        List<Game> games = new ArrayList<>();
-        String query = "SELECT id, map, score, status FROM Games WHERE joueur_id = ?";
-
+    // Méthode pour mettre à jour un jeu existant
+    public void updateGame(int id, int score, String status) throws SQLException {
+        String query = "UPDATE Games SET score = ?, status = ? WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, userId);
-
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    games.add(map(resultSet));
-                }
-            } catch (ModelException e) {
-                throw new RuntimeException(e);
-            }
+            statement.setInt(1, score);
+            statement.setString(2, status);
+            statement.setInt(3, id);
+            statement.executeUpdate();
         }
-
-        return games;
-    }
-
-    public void updateGame(int id, int score) {
     }
 
 
-    // Ajouter d'autres méthodes CRUD ici...
 }
