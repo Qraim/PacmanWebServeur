@@ -30,7 +30,7 @@ public class GameServlet extends HttpServlet {
         JSONObject requestJson = new JSONObject(requestBody);
         JSONObject responseJson = new JSONObject();
 
-        String action = requestJson.optString("action", "add"); // "add" par défaut
+        String action = requestJson.optString("action", "add");
 
         try (Connection connection = daoFactory.getConnection()) {
             GameDAO gameDAO = new GameDAO(connection);

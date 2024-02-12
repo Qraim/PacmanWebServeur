@@ -55,7 +55,7 @@ public class GameUsersServlet extends HttpServlet {
             userGameDAO.addUserGame(userId, gameId);
 
             responseJson.put("success", true);
-            responseJson.put("message", "Game added successfully.");
+            responseJson.put("message", "Users and Games are now linked.");
 
         } catch (SQLException e) {
             responseJson.put("success", false);
