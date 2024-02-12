@@ -30,26 +30,46 @@ public class GameServlet extends HttpServlet {
         JSONObject requestJson = new JSONObject(requestBody);
         JSONObject responseJson = new JSONObject();
 
+        String action = requestJson.optString("action", "add"); // "add" par défaut
+
         try (Connection connection = daoFactory.getConnection()) {
             GameDAO gameDAO = new GameDAO(connection);
-            UserGameDAO userGameDAO = new UserGameDAO(connection); // Utiliser UserGameDAO pour gérer les associations
 
-            Game g = new Game();
-            g.setMap(requestJson.getString("map"));
-            g.setScore(requestJson.getInt("score"));
-            g.setStatus(requestJson.getString("status"));
+            if ("add".equals(action)) {
+                Game g = new Game();
+                g.setMap(requestJson.getString("map"));
+                g.setScore(requestJson.getInt("score"));
+                g.setStatus(requestJson.getString("status"));
 
-            int gameId = gameDAO.addGame(g);
+                int gameId = gameDAO.addGame(g);
 
-            if (requestJson.has("userId")) {
-                int userId = requestJson.getInt("userId");
-                userGameDAO.addUserGame(userId, gameId);
+                if (requestJson.has("userId")) {
+                    UserGameDAO userGameDAO = new UserGameDAO(connection);
+                    int userId = requestJson.getInt("userId");
+                    userGameDAO.addUserGame(userId, gameId);
+                }
+
+                responseJson.put("success", true);
+                responseJson.put("message", "Game added successfully.");
+                responseJson.put("gameId", gameId);
+            } else if ("update".equals(action)) {
+                int gameId = requestJson.getInt("gameId");
+                String status = requestJson.getString("status");
+                int score = requestJson.getInt("score");
+
+                boolean updateResult = gameDAO.updateGame(gameId,score, status);
+
+                if (updateResult) {
+                    responseJson.put("success", true);
+                    responseJson.put("message", "Game status updated successfully.");
+                } else {
+                    responseJson.put("success", false);
+                    responseJson.put("error", "Failed to update game status.");
+                }
+            } else {
+                responseJson.put("success", false);
+                responseJson.put("error", "Invalid action.");
             }
-
-            responseJson.put("success", true);
-            responseJson.put("message", "Game added successfully.");
-            responseJson.put("gameId", gameId); // Retourne l'ID du jeu inséré
-
         } catch (SQLException e) {
             responseJson.put("success", false);
             responseJson.put("error", e.getMessage());
@@ -60,5 +80,6 @@ public class GameServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(responseJson.toString());
     }
+
 
 }

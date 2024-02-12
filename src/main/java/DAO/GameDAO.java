@@ -4,8 +4,6 @@ import Modele.Game;
 import Modele.ModelException;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class GameDAO {
     private Connection connection;
@@ -14,14 +12,15 @@ public class GameDAO {
         this.connection = connection;
     }
 
-    // Modifiée pour ne plus inclure le userId, car cette information est désormais gérée séparément
     public int addGame(Game game) throws SQLException {
         String query = "INSERT INTO Games (map, score, status) VALUES (?, ?, ?)";
         // Utilisation de Statement.RETURN_GENERATED_KEYS pour récupérer l'ID du jeu inséré
         try (PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            System.out.println(game.getMap());
             statement.setString(1, game.getMap());
             statement.setInt(2, game.getScore());
             statement.setString(3, game.getStatus());
+
             int affectedRows = statement.executeUpdate();
 
             if (affectedRows == 0) {
@@ -66,13 +65,14 @@ public class GameDAO {
     }
 
     // Méthode pour mettre à jour un jeu existant
-    public void updateGame(int id, int score, String status) throws SQLException {
+    public boolean updateGame(int id, int score, String status) throws SQLException {
         String query = "UPDATE Games SET score = ?, status = ? WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, score);
             statement.setString(2, status);
             statement.setInt(3, id);
-            statement.executeUpdate();
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
         }
     }
 
