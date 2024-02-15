@@ -106,13 +106,13 @@ input[type="submit"]:hover {
 }
 
  table {
-     width: 100%;
+     width: 80%;
      border-collapse: collapse;
  }
 th, td {
-    border: 1px solid black;
+    border: 1px solid #000000;
     padding: 8px;
-    text-align: left;
+    text-align: center;
 }
 th {
     background-color: #f2f2f2;

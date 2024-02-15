@@ -4,6 +4,7 @@ import Modele.Game;
 import Modele.ModelException;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class GameDAO {
     private Connection connection;
@@ -16,7 +17,6 @@ public class GameDAO {
         String query = "INSERT INTO Games (map, score, status) VALUES (?, ?, ?)";
         // Utilisation de Statement.RETURN_GENERATED_KEYS pour récupérer l'ID du jeu inséré
         try (PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-            System.out.println(game.getMap());
             statement.setString(1, game.getMap());
             statement.setInt(2, game.getScore());
             statement.setString(3, game.getStatus());
@@ -74,6 +74,19 @@ public class GameDAO {
             int rowsAffected = statement.executeUpdate();
             return rowsAffected > 0;
         }
+    }
+
+    public ArrayList<Game> InGoingGames() throws SQLException, ModelException {
+        String query = "SELECT id, map, score, status FROM Games WHERE status = 'In Progress'";
+        ArrayList<Game> games = new ArrayList<>();
+        try (PreparedStatement statement = this.connection.prepareStatement(query)) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    games.add(map(resultSet));
+                }
+            }
+        }
+        return games;
     }
 
 

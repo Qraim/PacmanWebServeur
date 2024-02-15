@@ -3,7 +3,7 @@
 <%@ page import="Modele.Game" %>
 <jsp:include page="header.jsp"/>
 <body>
-<h1>Liste de vos parties</h1>
+<h1>Liste des parties en cours</h1>
 
 <c:if test="${not empty games}">
     <table>

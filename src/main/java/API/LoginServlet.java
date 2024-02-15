@@ -36,6 +36,7 @@ public class LoginServlet extends HttpServlet {
             responseJson.put("status", "success");
             responseJson.put("message", "Connexion réussie");
             responseJson.put("id", utilisateur.getId());
+            responseJson.put("name", utilisateur.getName());
 
         } else {
             responseJson.put("status", "failure");
