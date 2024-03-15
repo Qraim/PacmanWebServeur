@@ -37,6 +37,23 @@ public class UserGameDAO {
         return gameIds;
     }
 
+    public List<String> getTopUsersByScore() throws SQLException {
+        List<String> topUsers = new ArrayList<>();
+        // Sélectionne le nom de l'utilisateur et son meilleur score, et ordonne par le score de manière décroissante
+        String query = "SELECT u.name, MAX(ug.score) as max_score FROM users u JOIN user_games ug ON u.id = ug.user_id GROUP BY u.name ORDER BY max_score DESC";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    String userName = resultSet.getString("name");
+                    int score = resultSet.getInt("max_score");
+                    topUsers.add("User Name: " + userName + " - Score: " + score);
+                }
+            }
+        }
+        return topUsers;
+    }
+
+
     public List<Integer> getUsersByGameId(int gameId) throws SQLException {
         List<Integer> userIds = new ArrayList<>();
         String query = "SELECT user_id FROM user_games WHERE game_id = ?";
