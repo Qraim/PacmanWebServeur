@@ -4,6 +4,7 @@ import DAO.DAOFactory;
 import DAO.GameDAO;
 import DAO.UserGameDAO;
 import Modele.Game;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.servlet.*;
@@ -38,26 +39,32 @@ public class GameServlet extends HttpServlet {
             if ("add".equals(action)) {
                 Game g = new Game();
                 g.setMap(requestJson.getString("map"));
-                g.setScore(requestJson.getInt("score"));
                 g.setStatus(requestJson.getString("status"));
 
                 int gameId = gameDAO.addGame(g);
+                UserGameDAO userGameDAO = new UserGameDAO(connection);
 
                 if (requestJson.has("userId")) {
-                    UserGameDAO userGameDAO = new UserGameDAO(connection);
                     int userId = requestJson.getInt("userId");
                     userGameDAO.addUserGame(userId, gameId);
                 }
-
                 responseJson.put("success", true);
                 responseJson.put("message", "Game added successfully.");
                 responseJson.put("gameId", gameId);
             } else if ("update".equals(action)) {
                 int gameId = requestJson.getInt("gameId");
                 String status = requestJson.getString("status");
-                int score = requestJson.getInt("score");
 
-                boolean updateResult = gameDAO.updateGame(gameId,score, status);
+                JSONArray playersScores = requestJson.getJSONArray("playersScores");
+                UserGameDAO userGameDAO = new UserGameDAO(connection);
+                boolean updateResult = gameDAO.updateGame(gameId, status);
+
+                for (int i = 0; i < playersScores.length(); i++) {
+                    JSONObject playerScore = playersScores.getJSONObject(i);
+                    int playerId = playerScore.getInt("id");
+                    int playerScoreValue = playerScore.getInt("score");
+                    userGameDAO.AddScoreForUser(playerId, playerScoreValue, gameId);
+                }
 
                 if (updateResult) {
                     responseJson.put("success", true);

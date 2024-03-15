@@ -15,7 +15,6 @@ public class GameDAO {
 
     public int addGame(Game game) throws SQLException {
         String query = "INSERT INTO Games (map, score, status) VALUES (?, ?, ?)";
-        // Utilisation de Statement.RETURN_GENERATED_KEYS pour récupérer l'ID du jeu inséré
         try (PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, game.getMap());
             statement.setInt(2, game.getScore());
@@ -65,14 +64,12 @@ public class GameDAO {
     }
 
     // Méthode pour mettre à jour un jeu existant
-    public boolean updateGame(int id, int score, String status) throws SQLException {
-        String query = "UPDATE Games SET score = ?, status = ? WHERE id = ?";
+    public boolean updateGame(int id, String status) throws SQLException {
+        String query = "UPDATE Games SET status = ? WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, score);
-            statement.setString(2, status);
-            statement.setInt(3, id);
-            int rowsAffected = statement.executeUpdate();
-            return rowsAffected > 0;
+            statement.setString(1, status);
+            statement.setInt(2, id);
+            return statement.executeUpdate() > 0;
         }
     }
 

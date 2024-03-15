@@ -27,7 +27,7 @@
         </div>
         <div class="form-group">
             <label for="nom">Nom d'utilisateur:</label>
-            <input type="text" name="nom" id="nom" value="<c:out value="${User.name}"/>" size="20" maxlength="20" />
+            <input type="text" name="nom" id="nom" required="required" value="<c:out value="${User.name}"/>" size="20" maxlength="20" />
             <c:if test="${not empty Forms.erreurs['nom']}">
                 <span class="error">${Forms.erreurs['nom']}</span>
             </c:if>

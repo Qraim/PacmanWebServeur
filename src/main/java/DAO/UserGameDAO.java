@@ -51,6 +51,16 @@ public class UserGameDAO {
         return userIds;
     }
 
+    public void AddScoreForUser(int id, int score, int gameid) throws SQLException {
+        String query = "UPDATE user_games SET score = ? WHERE user_id = ? AND game_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, score);
+            statement.setInt(2, id);
+            statement.setInt(3, gameid);
+            statement.executeUpdate();
+        }
+    }
+
     // Supprime une association entre un utilisateur et un jeu
     public void deleteUserGame(int userId, int gameId) throws SQLException {
         String query = "DELETE FROM user_games WHERE user_id = ? AND game_id = ?";
