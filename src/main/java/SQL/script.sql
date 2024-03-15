@@ -18,6 +18,7 @@ CREATE TABLE games (
 CREATE TABLE user_games (
                             user_id INT,
                             game_id INT,
+                            score, INT,
                             FOREIGN KEY (user_id) REFERENCES users(id),
                             FOREIGN KEY (game_id) REFERENCES games(id)
 );

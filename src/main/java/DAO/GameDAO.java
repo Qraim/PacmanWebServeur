@@ -47,7 +47,7 @@ public class GameDAO {
 
     // Cette méthode pourrait ne plus être pertinente selon votre nouvelle conception
     public Game getGame(int gameId) throws SQLException, ModelException {
-        String query = "SELECT id, map, score, status FROM Games WHERE id = ?";
+        String query = "SELECT id, map, u.score, status FROM Games g JOIN user_games u ON g.id=u.game_id WHERE id = ?";
         Game game = null;
 
         try (PreparedStatement statement = this.connection.prepareStatement(query)) {
