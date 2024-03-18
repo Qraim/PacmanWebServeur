@@ -15,15 +15,17 @@
         <div class="navbar">
             <a href="${pageContext.request.contextPath}/index.jsp">Accueil</a>
             <a href="${pageContext.request.contextPath}/ingoing">Jeux en cours</a>
+            <a href="${pageContext.request.contextPath}/leader">Leaderboard</a>
 
             <c:if test="${sessionScope.sessionUser == null}">
                 <a href="${pageContext.request.contextPath}/login">Connexion</a>
                 <a href="${pageContext.request.contextPath}/register">Inscription</a>
             </c:if>
             <c:if test="${sessionScope.sessionUser != null}">
-                Welcome back, ${sessionScope.sessionUser.getName()}
                 <a href="${pageContext.request.contextPath}/games">Historique</a>
                 <a href="${pageContext.request.contextPath}/logout">Déconnexion</a>
+                ${sessionScope.sessionUser.getName()}
+
             </c:if>
         </div>
     </div>

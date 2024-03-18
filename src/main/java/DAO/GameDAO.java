@@ -14,11 +14,10 @@ public class GameDAO {
     }
 
     public int addGame(Game game) throws SQLException {
-        String query = "INSERT INTO Games (map, score, status) VALUES (?, ?, ?)";
+        String query = "INSERT INTO Games (map, status) VALUES (?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, game.getMap());
-            statement.setInt(2, game.getScore());
-            statement.setString(3, game.getStatus());
+            statement.setString(2, game.getStatus());
 
             int affectedRows = statement.executeUpdate();
 
@@ -42,12 +41,14 @@ public class GameDAO {
         game.setMap(resultSet.getString("map"));
         game.setScore(resultSet.getInt("score"));
         game.setStatus(resultSet.getString("status"));
+        game.setDate(resultSet.getDate("date"));
+
         return game;
     }
 
     // Cette méthode pourrait ne plus être pertinente selon votre nouvelle conception
     public Game getGame(int gameId) throws SQLException, ModelException {
-        String query = "SELECT id, map, u.score, status FROM Games g JOIN user_games u ON g.id=u.game_id WHERE id = ?";
+        String query = "SELECT id, map, u.score, status, g.date FROM Games g JOIN user_games u ON g.id=u.game_id WHERE id = ?";
         Game game = null;
 
         try (PreparedStatement statement = this.connection.prepareStatement(query)) {
@@ -74,7 +75,7 @@ public class GameDAO {
     }
 
     public ArrayList<Game> InGoingGames() throws SQLException, ModelException {
-        String query = "SELECT id, map, score, status FROM Games WHERE status = 'In Progress'";
+        String query = "SELECT id, map, status, date FROM games WHERE status = 'In Progress'";
         ArrayList<Game> games = new ArrayList<>();
         try (PreparedStatement statement = this.connection.prepareStatement(query)) {
             try (ResultSet resultSet = statement.executeQuery()) {

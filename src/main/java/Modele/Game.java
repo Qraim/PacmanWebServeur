@@ -1,6 +1,7 @@
 package Modele;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Game implements Comparable<Game>{
     private int id;
@@ -9,6 +10,7 @@ public class Game implements Comparable<Game>{
     private int score;
     private String status;
     private ArrayList<User> joueurs;
+    private Date date;
 
     public Game(String map, int score, String status) {
         this.map = map;
@@ -29,6 +31,14 @@ public class Game implements Comparable<Game>{
         }else {
             this.id = id;
         }
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Date getDate() {
+        return date;
     }
 
     public User getJoueur() {

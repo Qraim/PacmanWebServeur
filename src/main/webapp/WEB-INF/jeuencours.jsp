@@ -20,7 +20,6 @@
             <tr>
                 <td>${game.id}</td>
                 <td>${game.map}</td>
-                <td>${game.score}</td>
                 <td>${game.status}</td>
             </tr>
         </c:forEach>

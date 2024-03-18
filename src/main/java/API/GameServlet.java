@@ -13,6 +13,7 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.stream.Collectors;
 
 @WebServlet("/api/game")
@@ -40,6 +41,7 @@ public class GameServlet extends HttpServlet {
                 Game g = new Game();
                 g.setMap(requestJson.getString("map"));
                 g.setStatus(requestJson.getString("status"));
+                g.setDate(Date.from(new Date().toInstant()));
 
                 int gameId = gameDAO.addGame(g);
                 UserGameDAO userGameDAO = new UserGameDAO(connection);

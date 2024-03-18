@@ -10,8 +10,8 @@ CREATE TABLE users (
 CREATE TABLE games (
                        id SERIAL PRIMARY KEY,
                        map TEXT,
-                       score INT,
-                       status VARCHAR(255)
+                       status VARCHAR(255),
+                        date DATE
 );
 
 -- Creating the user_games table

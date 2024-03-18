@@ -13,6 +13,8 @@
             <th>Map</th>
             <th>Score</th>
             <th>Status</th>
+            <th>Date</th>
+
         </tr>
         </thead>
         <tbody>
@@ -22,6 +24,8 @@
                 <td>${game.map}</td>
                 <td>${game.score}</td>
                 <td>${game.status}</td>
+                <td>${game.date}</td>
+
             </tr>
         </c:forEach>
         </tbody>
