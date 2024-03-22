@@ -8,4 +8,6 @@ public interface UserDao {
 
     User trouver( String email ) throws DAOException;
 
+    void supprimer(int userId) throws DAOException;
+
 }

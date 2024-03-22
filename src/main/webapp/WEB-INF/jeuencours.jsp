@@ -11,7 +11,6 @@
         <tr>
             <th>ID</th>
             <th>Map</th>
-            <th>Score</th>
             <th>Status</th>
         </tr>
         </thead>

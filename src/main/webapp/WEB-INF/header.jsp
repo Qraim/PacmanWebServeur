@@ -25,7 +25,10 @@
                 <a href="${pageContext.request.contextPath}/games">Historique</a>
                 <a href="${pageContext.request.contextPath}/logout">Déconnexion</a>
                 ${sessionScope.sessionUser.getName()}
-
+                <form action="${pageContext.request.contextPath}/deleteUser" method="post">
+                    <input type="hidden" name="id" value="${sessionScope.sessionUser.id}">
+                    <button type="submit" onclick="return confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.');">Supprimer mon compte</button>
+                </form>
             </c:if>
         </div>
     </div>

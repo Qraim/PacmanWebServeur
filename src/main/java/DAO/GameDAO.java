@@ -39,7 +39,6 @@ public class GameDAO {
         Game game = new Game();
         game.setId(resultSet.getInt("id"));
         game.setMap(resultSet.getString("map"));
-        game.setScore(resultSet.getInt("score"));
         game.setStatus(resultSet.getString("status"));
         game.setDate(resultSet.getDate("date"));
 

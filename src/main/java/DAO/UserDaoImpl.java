@@ -93,6 +93,25 @@ public class UserDaoImpl implements UserDao {
     }
 
 
+    private static final String SQL_DELETE_PAR_ID = "DELETE FROM users WHERE id = ?";
+    @Override
+    public void supprimer(int userId) throws DAOException {
+        Connection connexion = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connexion = daoFactory.getConnection();
+            preparedStatement = initialisationRequetePreparee(connexion, SQL_DELETE_PAR_ID, false, userId);
+            int statut = preparedStatement.executeUpdate();
+            if (statut == 0) {
+                throw new DAOException("Échec de la suppression de l'utilisateur, aucune ligne supprimée de la table.");
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            fermeturesSilencieuses(preparedStatement, connexion);
+        }
+    }
 
 
     /* Fermeture silencieuse du resultset */
