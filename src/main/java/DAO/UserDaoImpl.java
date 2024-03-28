@@ -7,9 +7,9 @@ import java.sql.*;
 
 public class UserDaoImpl implements UserDao {
 
-    private DAOFactory          daoFactory;
+    private DAOFactoryPosgres daoFactory;
 
-    UserDaoImpl( DAOFactory daoFactory ) {
+    UserDaoImpl( DAOFactoryPosgres daoFactory ) {
         this.daoFactory = daoFactory;
     }
 

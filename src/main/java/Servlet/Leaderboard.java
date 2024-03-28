@@ -1,6 +1,6 @@
 package Servlet;
 
-import DAO.DAOFactory;
+import DAO.DAOFactoryPosgres;
 import DAO.UserGameDAO;
 
 import javax.servlet.*;
@@ -13,10 +13,10 @@ import java.util.List;
 @WebServlet(name = "Leaderboard", value = "/leader")
 public class Leaderboard extends HttpServlet {
 
-    private DAOFactory daoFactory;
+    private DAOFactoryPosgres daoFactory;
 
     public void init() {
-        this.daoFactory = (DAOFactory) getServletContext().getAttribute("DAOFactory");
+        this.daoFactory = (DAOFactoryPosgres) getServletContext().getAttribute("DAOFactory");
     }
 
 

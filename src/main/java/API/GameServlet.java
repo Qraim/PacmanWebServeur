@@ -1,6 +1,6 @@
 package API;
 
-import DAO.DAOFactory;
+import DAO.DAOFactoryPosgres;
 import DAO.GameDAO;
 import DAO.UserGameDAO;
 import Modele.Game;
@@ -19,11 +19,11 @@ import java.util.stream.Collectors;
 @WebServlet("/api/game")
 public class GameServlet extends HttpServlet {
 
-    private DAOFactory daoFactory;
+    private DAOFactoryPosgres daoFactory;
 
     @Override
     public void init() {
-        this.daoFactory = (DAOFactory) getServletContext().getAttribute("DAOFactory");
+        this.daoFactory = (DAOFactoryPosgres) getServletContext().getAttribute("DAOFactory");
     }
 
     @Override

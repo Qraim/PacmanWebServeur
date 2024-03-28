@@ -1,13 +1,12 @@
 package Servlet;
 
-import DAO.DAOFactory;
+import DAO.DAOFactoryPosgres;
 import DAO.UserDao;
 import Forms.RemoveForm;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
-import java.sql.SQLException;
 
 @WebServlet(name = "DeleteUserServlet", urlPatterns = {"/deleteUser"})
 public class DeleteUserServlet extends HttpServlet {
@@ -21,7 +20,7 @@ public class DeleteUserServlet extends HttpServlet {
 
     public void init() throws ServletException {
         /* Récupération d'une instance de notre DAO Utilisateur */
-        this.utilisateurDao = ((DAOFactory) getServletContext().getAttribute(CONF_DAO_FACTORY)).getUtilisateurDao();
+        this.utilisateurDao = ((DAOFactoryPosgres) getServletContext().getAttribute(CONF_DAO_FACTORY)).getUtilisateurDao();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -1,26 +1,23 @@
 package Servlet;
 
-import DAO.DAOFactory;
+import DAO.DAOFactoryPosgres;
 import DAO.GameDAO;
-import DAO.UserGameDAO;
 import Modele.Game;
-import Modele.User;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.sql.Connection;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "JeuEnCours", value = "/ingoing")
 public class JeuEnCours extends HttpServlet {
 
-    private DAOFactory daoFactory;
+    private DAOFactoryPosgres daoFactory;
 
     public void init() {
-        this.daoFactory = (DAOFactory) getServletContext().getAttribute("DAOFactory");
+        this.daoFactory = (DAOFactoryPosgres) getServletContext().getAttribute("DAOFactory");
     }
 
     @Override

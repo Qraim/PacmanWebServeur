@@ -11,7 +11,9 @@
 <div class="header">
 
     <div class="container">
-        <img src="resources/images/pacman.png" alt="logo" class="logo" height="30px">
+
+
+
         <div class="navbar">
             <a href="${pageContext.request.contextPath}/index.jsp">Accueil</a>
             <a href="${pageContext.request.contextPath}/ingoing">Jeux en cours</a>

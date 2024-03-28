@@ -1,9 +1,7 @@
 package API;
 
-import DAO.DAOFactory;
-import DAO.GameDAO;
+import DAO.DAOFactoryPosgres;
 import DAO.UserGameDAO;
-import Modele.Game;
 import org.json.JSONObject;
 
 import javax.servlet.*;
@@ -17,7 +15,7 @@ import java.util.stream.Collectors;
 @WebServlet("/api/gameusers")
 public class GameUsersServlet extends HttpServlet {
 
-    private DAOFactory daoFactory;
+    private DAOFactoryPosgres daoFactory;
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -25,7 +23,7 @@ public class GameUsersServlet extends HttpServlet {
 
     @Override
     public void init() {
-        this.daoFactory = (DAOFactory) getServletContext().getAttribute("DAOFactory");
+        this.daoFactory = (DAOFactoryPosgres) getServletContext().getAttribute("DAOFactory");
     }
 
     @Override

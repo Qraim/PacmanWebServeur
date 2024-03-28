@@ -1,6 +1,6 @@
 package Servlet;
 
-import DAO.DAOFactory;
+import DAO.DAOFactoryPosgres;
 import DAO.GameDAO;
 import DAO.UserGameDAO;
 import Modele.Game;
@@ -16,10 +16,10 @@ import java.util.List;
 
 @WebServlet(name = "Historique", value = "/games")
 public class Historique extends HttpServlet {
-    private DAOFactory daoFactory;
+    private DAOFactoryPosgres daoFactory;
 
     public void init() {
-        this.daoFactory = (DAOFactory) getServletContext().getAttribute("DAOFactory");
+        this.daoFactory = (DAOFactoryPosgres) getServletContext().getAttribute("DAOFactory");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

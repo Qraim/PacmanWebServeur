@@ -1,18 +1,13 @@
 package Servlet;
 
-import DAO.DAOFactory;
+import DAO.DAOFactoryPosgres;
 import DAO.UserDao;
 import Forms.InscriptionForm;
-import Modele.ModelException;
 import Modele.User;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 
-
-import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -34,7 +29,7 @@ public class Inscription extends HttpServlet {
         try {
             // Log or print a debug message
             System.out.println("Initializing Inscription servlet...");
-            this.utilisateurDao = ((DAOFactory) getServletContext().getAttribute(CONF_DAO_FACTORY)).getUtilisateurDao();
+            this.utilisateurDao = ((DAOFactoryPosgres) getServletContext().getAttribute(CONF_DAO_FACTORY)).getUtilisateurDao();
             // Additional debug message to confirm successful retrieval
             System.out.println("DAOFactory successfully retrieved.");
         } catch (Exception e) {
