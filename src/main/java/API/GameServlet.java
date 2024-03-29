@@ -1,9 +1,12 @@
 package API;
 
+import DAO.DAOFactory;
 import DAO.DAOFactoryPosgres;
 import DAO.GameDAO;
 import DAO.UserGameDAO;
 import Modele.Game;
+import Traitement.GameTraitement;
+import Traitement.GameUsersTraitement;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -19,11 +22,11 @@ import java.util.stream.Collectors;
 @WebServlet("/api/game")
 public class GameServlet extends HttpServlet {
 
-    private DAOFactoryPosgres daoFactory;
+    private DAOFactory daoFactory;
 
     @Override
     public void init() {
-        this.daoFactory = (DAOFactoryPosgres) getServletContext().getAttribute("DAOFactory");
+        this.daoFactory = (DAOFactory) getServletContext().getAttribute("DAOFactory");
     }
 
     @Override
@@ -34,56 +37,17 @@ public class GameServlet extends HttpServlet {
 
         String action = requestJson.optString("action", "add");
 
+
         try (Connection connection = daoFactory.getConnection()) {
-            GameDAO gameDAO = new GameDAO(connection);
-
-            if ("add".equals(action)) {
-                Game g = new Game();
-                g.setMap(requestJson.getString("map"));
-                g.setStatus(requestJson.getString("status"));
-                g.setDate(Date.from(new Date().toInstant()));
-
-                int gameId = gameDAO.addGame(g);
-                UserGameDAO userGameDAO = new UserGameDAO(connection);
-
-                if (requestJson.has("userId")) {
-                    int userId = requestJson.getInt("userId");
-                    userGameDAO.addUserGame(userId, gameId);
-                }
-                responseJson.put("success", true);
-                responseJson.put("message", "Game added successfully.");
-                responseJson.put("gameId", gameId);
-            } else if ("update".equals(action)) {
-                int gameId = requestJson.getInt("gameId");
-                String status = requestJson.getString("status");
-
-                JSONArray playersScores = requestJson.getJSONArray("playersScores");
-                UserGameDAO userGameDAO = new UserGameDAO(connection);
-                boolean updateResult = gameDAO.updateGame(gameId, status);
-
-                for (int i = 0; i < playersScores.length(); i++) {
-                    JSONObject playerScore = playersScores.getJSONObject(i);
-                    int playerId = playerScore.getInt("id");
-                    int playerScoreValue = playerScore.getInt("score");
-                    userGameDAO.AddScoreForUser(playerId, playerScoreValue, gameId);
-                }
-
-                if (updateResult) {
-                    responseJson.put("success", true);
-                    responseJson.put("message", "Game status updated successfully.");
-                } else {
-                    responseJson.put("success", false);
-                    responseJson.put("error", "Failed to update game status.");
-                }
-            } else {
-                responseJson.put("success", false);
-                responseJson.put("error", "Invalid action.");
-            }
+            GameTraitement traitement = new GameTraitement(connection);
+            responseJson = traitement.traitement(requestJson);
         } catch (SQLException e) {
+            responseJson = new JSONObject();
             responseJson.put("success", false);
             responseJson.put("error", e.getMessage());
             e.printStackTrace();
         }
+
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

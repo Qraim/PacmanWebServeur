@@ -2,6 +2,7 @@ package Servlet;
 
 import DAO.DAOFactoryPosgres;
 import DAO.UserGameDAO;
+import DAO.UserGameDAOImpl;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -23,7 +24,7 @@ public class Leaderboard extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try (Connection connection = daoFactory.getConnection()) {
-            UserGameDAO userGameDAO = new UserGameDAO(connection);
+            UserGameDAO userGameDAO = new UserGameDAOImpl(connection);
             List<String> topUsers = userGameDAO.getTopUsersByScore();
             request.setAttribute("topUsers", topUsers);
         } catch (Exception e) {

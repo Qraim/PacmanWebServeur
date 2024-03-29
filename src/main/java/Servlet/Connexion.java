@@ -1,5 +1,6 @@
 package Servlet;
 
+import DAO.DAOFactory;
 import DAO.DAOFactoryPosgres;
 import DAO.UserDao;
 import Forms.LoginForm;
@@ -21,7 +22,7 @@ public class Connexion extends HttpServlet {
     private UserDao utilisateurDao;
 
     public void init() throws ServletException {
-        this.utilisateurDao = ((DAOFactoryPosgres) getServletContext().getAttribute(CONF_DAO_FACTORY)).getUtilisateurDao();
+        this.utilisateurDao = ((DAOFactory) getServletContext().getAttribute(CONF_DAO_FACTORY)).getUtilisateurDao();
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

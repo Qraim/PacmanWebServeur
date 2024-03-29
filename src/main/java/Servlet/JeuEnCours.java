@@ -2,6 +2,7 @@ package Servlet;
 
 import DAO.DAOFactoryPosgres;
 import DAO.GameDAO;
+import DAO.GameDAOImpl;
 import Modele.Game;
 
 import javax.servlet.*;
@@ -23,7 +24,7 @@ public class JeuEnCours extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try (Connection connection = daoFactory.getConnection()) {
-            GameDAO gameDAO = new GameDAO(connection);
+            GameDAO gameDAO = new GameDAOImpl(connection);
 
             List<Game> games = gameDAO.InGoingGames();
             request.setAttribute("games", games);
@@ -39,7 +40,7 @@ public class JeuEnCours extends HttpServlet {
 
 
         try (Connection connection = daoFactory.getConnection()) {
-            GameDAO gameDAO = new GameDAO(connection);
+            GameDAO gameDAO = new GameDAOImpl(connection);
 
             List<Game> games = gameDAO.InGoingGames();
             request.setAttribute("games", games);

@@ -1,8 +1,6 @@
 package Servlet;
 
-import DAO.DAOFactoryPosgres;
-import DAO.GameDAO;
-import DAO.UserGameDAO;
+import DAO.*;
 import Modele.Game;
 import Modele.User;
 
@@ -35,8 +33,8 @@ public class Historique extends HttpServlet {
 
         // Récupère les parties de jeu de l'utilisateur connecté
         try (Connection connection = daoFactory.getConnection()) {
-            UserGameDAO UsergameDAO = new UserGameDAO(connection);
-            GameDAO gameDAO = new GameDAO(connection);
+            UserGameDAO UsergameDAO = new UserGameDAOImpl(connection);
+            GameDAO gameDAO = new GameDAOImpl(connection);
 
             List<Integer> gamesId = UsergameDAO.getGamesByUserId(user.getId());
 

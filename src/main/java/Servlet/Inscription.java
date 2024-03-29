@@ -1,5 +1,6 @@
 package Servlet;
 
+import DAO.DAOFactory;
 import DAO.DAOFactoryPosgres;
 import DAO.UserDao;
 import Forms.InscriptionForm;
@@ -29,7 +30,7 @@ public class Inscription extends HttpServlet {
         try {
             // Log or print a debug message
             System.out.println("Initializing Inscription servlet...");
-            this.utilisateurDao = ((DAOFactoryPosgres) getServletContext().getAttribute(CONF_DAO_FACTORY)).getUtilisateurDao();
+            this.utilisateurDao = ((DAOFactory) getServletContext().getAttribute(CONF_DAO_FACTORY)).getUtilisateurDao();
             // Additional debug message to confirm successful retrieval
             System.out.println("DAOFactory successfully retrieved.");
         } catch (Exception e) {

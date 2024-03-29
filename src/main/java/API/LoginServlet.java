@@ -1,5 +1,6 @@
 package API;
 
+import DAO.DAOFactory;
 import DAO.DAOFactoryPosgres;
 import DAO.UserDao;
 import Forms.LoginForm;
@@ -20,7 +21,7 @@ public class LoginServlet extends HttpServlet {
     UserDao utilisateurDao;
 
     public void init() throws ServletException {
-        this.utilisateurDao = ((DAOFactoryPosgres) getServletContext().getAttribute(CONF_DAO_FACTORY)).getUtilisateurDao();
+        this.utilisateurDao = ((DAOFactory) getServletContext().getAttribute(CONF_DAO_FACTORY)).getUtilisateurDao();
     }
 
     @Override
